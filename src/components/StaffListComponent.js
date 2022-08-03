@@ -74,7 +74,7 @@ class StaffListComponent extends Component {
         return (
             <div className="container">
                 <div className="row m-3">
-                    {/* <Button onClick={() => this.onColumSelect(cot2)} color="primary">
+                    <Button onClick={() => this.onColumSelect(cot2)} color="primary">
                         2
                     </Button>
                     <Button onClick={() => this.onColumSelect(cot3)} color="primary">
@@ -86,7 +86,7 @@ class StaffListComponent extends Component {
                     </Button>
                     <Button onClick={() => this.onColumSelect(cot6)} color="primary">
                         6
-                    </Button> */}
+                    </Button>
                 </div>
                 <div className='row'>
                     {StaffList}
@@ -99,4 +99,4 @@ class StaffListComponent extends Component {
     }
 }
 
-// export default StaffListComponent;
+export default StaffListComponent;
