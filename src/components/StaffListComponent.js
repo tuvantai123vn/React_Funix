@@ -99,4 +99,4 @@ class StaffListComponent extends Component {
     }
 }
 
-// export default StaffListComponent;
+export default StaffListComponent;
