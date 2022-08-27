@@ -47,7 +47,7 @@ function RenderListSalary(props) {
                 <Button color="primary" onClick={() => setSortSalary(!sortSalary)}>Sắp xếp theo hệ số</Button>
             </div>
             <div className="row mb-3">
-                {salary}
+                {/* {salary} */}
             </div>
         </div>
     );
