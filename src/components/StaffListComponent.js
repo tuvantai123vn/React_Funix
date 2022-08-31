@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Card, CardImg, CardTitle, Button, Form, FormGroup, Label, Input, Col, FormFeedback, Modal, ModalHeader, ModalBody } from "reactstrap";
+import { Card, CardImg, CardTitle, Button, Form, FormGroup, Label, Input, Col, FormFeedback, Modal, ModalHeader, ModalBody, CardText } from "reactstrap";
 import { Link } from 'react-router-dom';
+import { DEPARTMENTS } from "../shared/staffs";
 
 class StaffList extends Component {
     constructor(props) {
@@ -41,13 +42,17 @@ class StaffList extends Component {
             [name]: value
         });
     }
+
     handleSubmit = () => {
+        const department = DEPARTMENTS.find(
+            (department) => department.id === this.state.department
+        );
         const newStaff = {
             name: this.state.name,
             doB: this.state.doB,
             salaryScale: this.state.salaryScale,
             startDate: this.state.startDate,
-            department: this.state.department,
+            department: department,
             annualLeave: this.state.annualLeave,
             overTime: this.state.overTime,
             salary: this.state.salary,
@@ -103,7 +108,8 @@ class StaffList extends Component {
         console.log(nameS);
     };
     render() {
-        const errors = this.validate(this.state.name, this.state.department, this.state.salaryScale, this.state.annualLeave, this.state.overTime, this.state.doB, this.state.startDate)
+        const errors = this.validate(this.state.name, this.state.department, this.state.salaryScale, this.state.annualLeave, this.state.overTime, this.state.doB, this.state.startDate);
+
         const Liststaffs = this.props.staffs.filter((val) => {
             if (this.state.nameS === '') return val;
             else if (val.name.toLowerCase().includes(this.state.nameS.toLowerCase()))
@@ -208,11 +214,11 @@ class StaffList extends Component {
                                         invalid={errors.department !== ''}
                                         onBlur={this.handleBlur('department')}
                                         onChange={this.handleInputChange}>
-                                        <option>Sale</option>
-                                        <option>Hr</option>
-                                        <option>Marketing</option>
-                                        <option>IT</option>
-                                        <option>Finance</option>
+                                        <option value="Dept01">Sale</option>
+                                        <option value="Dept02">HR</option>
+                                        <option value="Dept03">Marketing</option>
+                                        <option value="Dept04">IT</option>
+                                        <option value="Dept05">Finance</option>
                                     </Input>
                                     <FormFeedback>{errors.department}</FormFeedback>
                                 </Col>

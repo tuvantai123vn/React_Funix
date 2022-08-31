@@ -1,9 +1,11 @@
 import React from "react";
-import { CardImg, CardTitle, Breadcrumb, BreadcrumbItem, CardText } from "reactstrap";
+import { Breadcrumb, BreadcrumbItem, CardTitle, CardText, CardImg } from 'reactstrap';
+
 import { Link } from 'react-router-dom'
 import dateFormat from 'dateformat';
 
 function RenderStaff({ staff }) {
+    console.log(staff);
     return (
         <div className="col-12">
             <div className="row">
