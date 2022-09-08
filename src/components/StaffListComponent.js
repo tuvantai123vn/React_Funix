@@ -58,7 +58,32 @@ class StaffList extends Component {
             salary: this.state.salary,
             image: this.state.image
         };
-        this.props.onAdd(newStaff);
+        if (newStaff.name === '') {
+            alert("Vui lòng nhập các trường");
+        } else if (newStaff.doB === '') {
+            alert("Vui lòng nhập các trường");
+        }
+        else if (newStaff.salaryScale === '') {
+            alert("Vui lòng nhập các trường");
+        }
+        else if (newStaff.startDate === '') {
+            alert("Vui lòng nhập các trường");
+        }
+        else if (newStaff.department === '') {
+            alert("Vui lòng nhập các trường");
+        }
+        else if (newStaff.annualLeave === '') {
+            alert("Vui lòng nhập các trường");
+        }
+        else if (newStaff.overTime === '') {
+            alert("Vui lòng nhập các trường");
+        }
+        else if (newStaff.salary === '') {
+            alert("Vui lòng nhập các trường");
+        }
+        else {
+            this.props.onAdd(newStaff);
+        }
     }
 
     handleBlur = (field) => (evt) => {
@@ -78,7 +103,9 @@ class StaffList extends Component {
             annualLeave: '',
             overTime: '',
         };
-        if (this.state.touched.name && name.length < 3)
+        if (this.state.touched.name === '')
+            errors.name = 'Phải nhập tên';
+        else if (this.state.touched.name && name.length < 3)
             errors.name = 'Tên phải> = 3 ký tự';
         else if (this.state.touched.name && name.length > 50)
             errors.name = 'Tên phải =< 50 ký tự';
