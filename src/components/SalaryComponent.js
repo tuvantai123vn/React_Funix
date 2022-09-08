@@ -28,8 +28,6 @@ function RenderListSalary(props) {
             </div>
         );
     })
-
-
     return (
         <div className="container">
             <div className="row">

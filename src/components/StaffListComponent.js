@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, CardImg, CardTitle, Button, Form, FormGroup, Label, Input, Col, FormFeedback, Modal, ModalHeader, ModalBody, CardText } from "reactstrap";
+import { Card, CardImg, CardTitle, Button, Form, FormGroup, Label, Input, Col, FormFeedback, Modal, ModalHeader, ModalBody } from "reactstrap";
 import { Link } from 'react-router-dom';
 import { DEPARTMENTS } from "../shared/staffs";
 
