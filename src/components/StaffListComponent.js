@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Card, CardImg, CardTitle, Button, Form, FormGroup, Label, Input, Col, FormFeedback, Modal, ModalHeader, ModalBody, Row } from "reactstrap";
 import { Link } from 'react-router-dom';
-import { DEPARTMENTS } from "../shared/staffs";
 import { Control, LocalForm, Errors } from 'react-redux-form';
 
 
@@ -22,7 +21,7 @@ class StaffList extends Component {
             touched: {
                 doB: false,
                 startDate: false,
-            }
+            },
         }
         this.timnhanvien = this.timnhanvien.bind(this);
         this.toggle = this.toggle.bind(this);
@@ -40,7 +39,7 @@ class StaffList extends Component {
     }
 
     handleSubmit = (value) => {
-        const department = DEPARTMENTS.find(
+        const department = this.props.dept.find(
             (department) => department.id === value.department
         );
         const newStaff = {
@@ -96,7 +95,6 @@ class StaffList extends Component {
 
         const errors = this.validate(this.state.doB, this.state.startDate);
 
-        // console.log(this.props.staff);
         const Liststaffs = this.props.staffs.filter((val) => {
             if (this.state.nameS === '') return val;
             else if (val.name.toLowerCase().includes(this.state.nameS.toLowerCase()))
