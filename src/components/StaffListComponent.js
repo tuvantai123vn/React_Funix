@@ -69,7 +69,7 @@ class StaffList extends Component {
         else if (newStaff.startDate === '') {
             alert("Vui lòng nhập các trường");
         }
-        else if (newStaff.department === '') {
+        else if (newStaff.department === false) {
             alert("Vui lòng nhập các trường");
         }
         else if (newStaff.annualLeave === '') {
