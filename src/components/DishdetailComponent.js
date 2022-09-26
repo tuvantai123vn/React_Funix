@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-    Card, CardImg, CardImgOverlay, CardText, CardBody,
+    Card, CardImg, CardText, CardBody,
     CardTitle, Breadcrumb, BreadcrumbItem, Label,
     Modal, ModalHeader, ModalBody, Button, Row, Col
 } from 'reactstrap';
@@ -8,8 +8,9 @@ import { Link } from 'react-router-dom';
 import { Control, LocalForm } from 'react-redux-form';
 import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 import { Loading } from './LoadingComponent';
+import { baseUrl } from '../shared/baseUrl';
 
-function RenderDish({ dish, favorite, postFavorite }) {
+function RenderDish({ dish }) {
     return (
         <div className="col-12 col-md-5 m-1">
             <FadeTransform in
@@ -17,16 +18,7 @@ function RenderDish({ dish, favorite, postFavorite }) {
                     exitTransform: 'scale(0.5) translateY(-50%)'
                 }}>
                 <Card>
-                    <CardImg top src={dish.image} alt={dish.name} />
-                    <CardImgOverlay>
-                        <Button outline color="primary" onClick={() => favorite ? console.log('Already favorite') : postFavorite(dish._id)}>
-                            {favorite ?
-                                <span className="fa fa-heart"></span>
-                                :
-                                <span className="fa fa-heart-o"></span>
-                            }
-                        </Button>
-                    </CardImgOverlay>
+                    <CardImg top src={baseUrl + dish.image} alt={dish.name} />
                     <CardBody>
                         <CardTitle>{dish.name}</CardTitle>
                         <CardText>{dish.description}</CardText>
@@ -38,7 +30,7 @@ function RenderDish({ dish, favorite, postFavorite }) {
 
 }
 
-function RenderComments({ comments, addComment, dishId }) {
+function RenderComments({ comments, postComment, dishId }) {
     if (comments != null)
         return (
             <div className="col-12 col-md-5 m-1">
@@ -51,13 +43,13 @@ function RenderComments({ comments, addComment, dishId }) {
                                     <li>
                                         <p>{comment.comment}</p>
                                         <p>{comment.rating} stars</p>
-                                    </li>
+                                        <p>-- {comment.author}</p>                                    </li>
                                 </Fade>
                             );
                         })}
                     </Stagger>
                 </ul>
-                <CommentForm dishId={dishId} addComment={addComment} />
+                <CommentForm dishId={dishId} postComment={postComment} />
             </div>
         );
     else
@@ -88,7 +80,7 @@ class CommentForm extends Component {
 
     handleSubmit(values) {
         this.toggleModal();
-        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
+        this.props.postComment(this.props.dishId, values.rating, values.author, values.comment);
 
     }
 
@@ -110,6 +102,13 @@ class CommentForm extends Component {
                                         <option>4</option>
                                         <option>5</option>
                                     </Control.select>
+                                </Col>
+                            </Row>
+                            <Row className="form-group">
+                                <Col>
+                                    <Label htmlFor="author">Your Name</Label>
+                                    <Control.text model=".author" id="author"
+                                        rows="6" className="form-control" />
                                 </Col>
                             </Row>
                             <Row className="form-group">
@@ -166,7 +165,7 @@ const DishDetail = (props) => {
                 <div className="row">
                     <RenderDish dish={props.dish} favorite={props.favorite} postFavorite={props.postFavorite} />
                     <RenderComments comments={props.comments}
-                        addComment={props.addComment}
+                        postComment={props.postComment}
                         dishId={props.dish.id}
                     />
                 </div>
