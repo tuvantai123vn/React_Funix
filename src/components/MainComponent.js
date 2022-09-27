@@ -1,58 +1,138 @@
-import React, { Component } from 'react';
-import { Redirect, Route, Switch, withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import Header from './HeaderComponent';
-import Footer from './FooterComponent';
-import StaffList from './StaffListComponent';
-import StaffDetail from './StaffDetail';
-import Department from './DeparmentComponent';
-import RenderListSalary from './SalaryComponent';
+/* eslint-disable no-useless-constructor */
+import React, { Component } from "react";
+import StaffDetail from "../components/StaffdetailComponent";
+import { connect } from "react-redux";
+import Header from "../components/HeaderComponent";
+import Footer from "../components/FooterComponent";
+import StaffList from "../components/StaffsListComponent";
+import { Switch, Route, Redirect, withRouter } from "react-router-dom";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
+import Department from "./DepartmentComponent";
+import SalaryTable from "./SalaryTableComponent";
+import StaffDept from "./StaffInDeptComponent";
+import {
+    postStaff,
+    fetchStaff,
+    fetchDepartment,
+    addDepartment,
+    fetchStaffSalary,
+    addSalary,
+    updateStaff,
+    deleteStaff,
+} from "../redux/ActionCreactors";
 
 // Khai báo state reducer
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
     return {
-        reduxdepartments: state.departments,
-        reduxstaffs: state.staffs,
-    }
-}
+        staffs: state.staffs,
+        department: state.department,
+        salary: state.salary,
+    };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+    postStaff: (staff) => {
+        dispatch(postStaff(staff));
+    },
+    fetchStaff: () => {
+        dispatch(fetchStaff());
+    },
+    addDepartment: (department) => {
+        dispatch(addDepartment(department));
+    },
+    fetchDepartment: () => {
+        dispatch(fetchDepartment());
+    },
+    addSalary: (salary) => {
+        dispatch(addSalary(salary));
+    },
+    fetchStaffSalary: () => {
+        dispatch(fetchStaffSalary());
+    },
+    deleteStaff: (id) => {
+        dispatch(deleteStaff(id));
+    },
+    updateStaff: (staff) => {
+        dispatch(updateStaff(staff));
+    },
+});
 
 class Main extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            staffs: props.reduxstaffs
-        }
-        this.addStaff = this.addStaff.bind(this);
-    }
-    addStaff(staff) {
-        const id = Math.floor(Math.random() * 10001);
-        const newStaff = { id, ...staff };
-        this.setState({
-            staffs: [...this.props.reduxstaffs, newStaff]
-        })
-        console.log(newStaff);
-        console.log(this.props.reduxstaffs);
     }
 
-    StaffWithId = ({ match }) => {
-        return (
-            <StaffDetail staff={this.state.staffs.filter((item) => item.id === parseInt(match.params.staffId, 10))[0]} />
-        );
+    componentDidMount() {
+        this.props.fetchStaff();
+        this.props.fetchDepartment();
+        this.props.fetchStaffSalary();
     }
+
+    postStaff = (newStaff) => {
+        this.setState({ staffs: [...this.props.staffs.staff, newStaff] });
+    };
+
     render() {
+        const StaffId = ({ match, history }) => {
+            return (
+                <StaffDetail
+                    staff={
+                        this.props.staffs.staff.filter(
+                            (staff) => staff.id === parseInt(match.params.id, 10)
+                        )[0]
+                    }
+                    department={this.props.department}
+                    updateStaff={this.props.updateStaff}
+                    history={history}
+                />
+            );
+        };
+
         return (
             <div>
                 <Header />
-                <Switch>
-                    <Route exact path='/nhanvien' component={() => <StaffList onAdd={this.addStaff} staffs={this.state.staffs} dept={this.props.reduxdepartments} />} />
-                    <Route path='/nhanvien/:staffId' component={this.StaffWithId} />
-                    <Route path='/phongban' component={() => <Department dept={this.props.reduxdepartments} />} />
-                    <Route path='/luong' component={() => <RenderListSalary salary={this.props.reduxstaffs} />} />
-                    <Redirect to='/nhanvien' />
-                </Switch>
+                <TransitionGroup>
+                    <CSSTransition
+                        key={this.props.location.key}
+                        classNames="page"
+                        timeout={300}
+                    >
+                        <Switch location={this.props.location}>
+                            <Route
+                                exact
+                                path="/staff"
+                                component={() => (
+                                    <StaffList
+                                        staff={this.props.staffs}
+                                        onAddStaff={this.onAddStaff}
+                                        postStaff={this.props.postStaff}
+                                    />
+                                )}
+                            />
+
+                            <Route exact path="/staff/:id" component={StaffId} />
+                            <Route
+                                exact
+                                path="/department"
+                                component={() => (
+                                    <Department department={this.props.department} />
+                                )}
+                            />
+                            <Route
+                                path="/department/:deptId"
+                                component={() => <StaffDept />}
+                            />
+                            <Route
+                                path="/salary"
+                                component={() => <SalaryTable staffList={this.props.staffs} />}
+                            />
+                            <Redirect to="/staff" />
+                        </Switch>
+                    </CSSTransition>
+                </TransitionGroup>
                 <Footer />
-            </div >
+            </div>
         );
     }
 }
-export default (withRouter(connect(mapStateToProps)(Main)));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Main));

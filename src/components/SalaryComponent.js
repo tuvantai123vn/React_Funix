@@ -1,55 +1,111 @@
-import React, { useState } from 'react';
-import { Card, CardTitle, Breadcrumb, BreadcrumbItem, CardText, CardBody, Button } from "reactstrap";
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import {
+    Button,
+    Card,
+    CardText,
+    Jumbotron,
+    BreadcrumbItem,
+    Breadcrumb,
+} from "reactstrap";
+import { Link } from "react-router-dom";
+import { Loading } from "./LoadingComponent";
 
-const LuongCB = 3000000;
-const LuongLT = 200000;
-
-function RenderSalary({ salary }) {
-    return (
-        <Card>
-            <CardTitle>{salary.name}</CardTitle>
-            <CardBody>
-                <CardText>Mã nhân viên: {salary.id}</CardText>
-                <CardText>hệ số lương: {salary.salaryScale}</CardText>
-                <CardText>Số ngày làm thêm: {salary.overTime}</CardText>
-                <CardText className='bg-light -2 shadow'>Lương: {(salary.salaryScale * LuongCB + salary.overTime * LuongLT).toFixed(0)}</CardText>
-            </CardBody>
-        </Card>
-    );
-}
-function RenderListSalary(props) {
-    const [sortSalary, setSortSalary] = useState(false);
-    console.log(sortSalary);
-    const salary = props.salary.sort((a, b) => sortSalary ? a.salaryScale - b.salaryScale : b.salaryScale - a.salaryScale).map((salary) => {
+const RenderSalary = ({ staff, salary, isLoading, errMess }) => {
+    const formatDecimal = require("format-decimal");
+    if (isLoading) {
+        return <Loading />;
+    } else if (errMess) {
+        return <h4>{errMess}</h4>;
+    } else
         return (
-            <div className='col-12 col-mb-6 col-lg-4 mt-2 mb-2' key={salary.id}>
-                <RenderSalary salary={salary} />
+            <Jumbotron>
+                <h2 className="py-3">{staff.name}</h2>
+                <p>Mã nhân viên: {staff.id}</p>
+                <p>Hệ số lương: {staff.salaryScale}</p>
+                <p>Số giờ làm thêm: {staff.overTime}</p>
+                <Card className="p-1">
+                    <CardText>
+                        Lương:{" "}
+                        {formatDecimal(salary, {
+                            decimal: ".",
+                            thousands: ",",
+                            precision: 0,
+                        })}{" "}
+                        VND
+                    </CardText>
+                </Card>
+            </Jumbotron>
+        );
+};
+
+function SalaryTable(props) {
+    const [staffList, setStaffList] = useState(props.staffList);
+    function salaryCalc(salaryScale, overTime) {
+        const basicSalary = 3000000;
+        const overTimeSalary = 200000;
+        return salaryScale * basicSalary + overTime * overTimeSalary;
+    }
+
+    function sortSalary(sorttype) {
+        let sortedStaffList = [...staffList];
+        let salaryA = 0;
+        let salaryB = 0;
+
+        if (sorttype === "increase") {
+            sortedStaffList.sort(function (a, b) {
+                salaryA = salaryCalc(a.salaryScale, a.overTime);
+                salaryB = salaryCalc(b.salaryScale, b.overTime);
+                return salaryA - salaryB;
+            });
+        }
+
+        if (sorttype === "decrease") {
+            sortedStaffList.sort(function (a, b) {
+                salaryA = salaryCalc(a.salaryScale, a.overTime);
+                salaryB = salaryCalc(b.salaryScale, b.overTime);
+                return salaryB - salaryA;
+            });
+        }
+
+        setStaffList(sortedStaffList);
+    }
+
+    const staff = staffList.staff.map((staff) => {
+        return (
+            <div className="col-12 col-md-6 col-lg-4" key={staff.id}>
+                <RenderSalary
+                    staff={staff}
+                    salary={salaryCalc(staff.salaryScale, staff.overTime)}
+                />
             </div>
         );
-    })
-
+    });
 
     return (
         <div className="container">
-            <div className="row">
-                <Breadcrumb>
-                    <BreadcrumbItem>
-                        <Link to='/nhanvien'>Nhân viên</Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem active>Lương</BreadcrumbItem>
-
-                </Breadcrumb>
+            <Breadcrumb>
+                <BreadcrumbItem>
+                    <Link to="/staff">Nhân Viên</Link>
+                </BreadcrumbItem>
+                <BreadcrumbItem active>Bảng Lương</BreadcrumbItem>
+            </Breadcrumb>
+            <div id="sort" className="row">
                 <div className="col-12">
-                    <h3>Lương</h3>
-                    <hr />
+                    <h5>Sắp Xếp Theo Lương</h5>
                 </div>
-                <Button color="primary" onClick={() => setSortSalary(!sortSalary)}>Sắp xếp theo hệ số</Button>
+                <div className="col-12">
+                    <Button onClick={() => sortSalary("increase")}>
+                        <span className="fa fa-sort-amount-asc"></span> Lương Thấp
+                    </Button>
+
+                    <Button onClick={() => sortSalary("decrease")}>
+                        <span className="fa fa-sort-amount-desc"></span> Lương Cao
+                    </Button>
+                </div>
             </div>
-            <div className="row mb-3">
-                {salary}
-            </div>
+            <div className="row">{staff}</div>
         </div>
     );
 }
-export default RenderListSalary;
+
+export default SalaryTable;
