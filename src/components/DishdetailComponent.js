@@ -38,6 +38,8 @@ function RenderDish({ dish, favorite, postFavorite }) {
 }
 
 function RenderComments({ comments, addComment, dishId }) {
+    console.log(comments)
+    console.log(addComment)
     if (comments != null)
         return (
             <div className="col-12 col-md-5 m-1">
@@ -49,6 +51,7 @@ function RenderComments({ comments, addComment, dishId }) {
                                 <Fade in key={comment._id}>
                                     <li>
                                         <p>{comment.comment}</p>
+                                        <p>--{comment.author}--{comment.date}</p>
                                         <p>{comment.rating} stars</p>
                                     </li>
                                 </Fade>
@@ -109,6 +112,13 @@ class CommentForm extends Component {
                                         <option>4</option>
                                         <option>5</option>
                                     </Control.select>
+                                </Col>
+                            </Row>
+                            <Row className="form-group">
+                                <Col>
+                                    <Label htmlFor="author">Your Name</Label>
+                                    <Control.input model=".author" id="author"
+                                        rows="6" className="form-control" />
                                 </Col>
                             </Row>
                             <Row className="form-group">
