@@ -39,15 +39,12 @@ class StaffList extends Component {
     }
 
     handleSubmit = (value) => {
-        const department = this.props.dept.find(
-            (department) => department.id === value.department
-        );
         const newStaff = {
             name: value.name,
             doB: this.state.doB,
             salaryScale: value.salaryScale,
             startDate: this.state.startDate,
-            department: department,
+            departmentId: value.departmentId,
             annualLeave: value.annualLeave,
             overTime: value.overTime,
             salary: 30000,
@@ -95,7 +92,7 @@ class StaffList extends Component {
 
         const errors = this.validate(this.state.doB, this.state.startDate);
 
-        const Liststaffs = this.props.staffs.filter((val) => {
+        const Liststaffs = this.props.staffs.staff.filter((val) => {
             if (this.state.nameS === '') return val;
             else if (val.name.toLowerCase().includes(this.state.nameS.toLowerCase()))
                 return val;
@@ -196,9 +193,9 @@ class StaffList extends Component {
                                 </Col>
                             </Row>
                             <Row className='form-group'>
-                                <Label md={4} htmlFor="department">Phòng ban:</Label>
+                                <Label md={4} htmlFor="departmentId">Phòng ban:</Label>
                                 <Col >
-                                    <Control.select className='form-control' model='.department' md={8} id="department" name="department">
+                                    <Control.select className='form-control' model='.departmentId' md={8} id="departmentId" name="departmentId">
                                         <option value="Dept01">Sale</option>
                                         <option value="Dept02">HR</option>
                                         <option value="Dept03">Marketing</option>
