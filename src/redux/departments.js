@@ -1,6 +1,6 @@
 import * as ActionTypes from "./ActionTypes";
 
-export const Departments = (
+export const department = (
     state = {
         isLoading: true,
         errMess: null,
@@ -10,21 +10,11 @@ export const Departments = (
 ) => {
     switch (action.type) {
         case ActionTypes.ADD_DEPARTMENT:
-            return {
-                ...state,
-                isLoading: false,
-                errMess: null,
-                department: action.payload,
-            };
+            return { ...state, isLoading: false, errMess: null, department: action.payload };
         case ActionTypes.DEPARTMENT_LOADING:
             return { ...state, isLoading: true, errMess: null, department: [] };
         case ActionTypes.DEPARTMENT_FAILED:
-            return {
-                ...state,
-                isLoading: false,
-                errMess: action.payload,
-                department: [],
-            };
+            return { ...state, isLoading: false, errMess: action.payload, department: [] };
         default:
             return state;
     }

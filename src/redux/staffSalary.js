@@ -1,6 +1,6 @@
 import * as ActionTypes from "./ActionTypes";
 
-export const Salary = (
+export const salary = (
     state = {
         isLoading: true,
         errMess: null,

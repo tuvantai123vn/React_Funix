@@ -2,8 +2,8 @@
 import * as ActionTypes from "./ActionTypes";
 import { baseUrl } from "../shared/baseUrl";
 
-export const fetchStaff = () => (dispatch) => {
-    dispatch(staffLoading(true));
+export const fetchStaffs = () => (dispatch) => {
+    dispatch(staffsLoading(true));
 
     return fetch(baseUrl + "staffs")
         .then(
@@ -28,13 +28,17 @@ export const fetchStaff = () => (dispatch) => {
         .catch((error) => dispatch(staffFailed(error.message)));
 };
 
-export const addStaff = (staff) => ({
-    type: ActionTypes.ADD_STAFF,
-    payload: {
-        staff,
-    },
+export const staffsLoading = () => ({
+    type: ActionTypes.STAFF_LOADING
 });
-
+export const staffFailed = (errmess) => ({
+    type: ActionTypes.STAFF_FAILED,
+    payload: errmess
+});
+export const addStaff = (staff) => ({
+    type: ActionTypes.ADD_STAFFS,
+    payload: staff
+});
 export const postStaff = (staff) => (dispatch) => {
     return fetch(baseUrl + "staffs", {
         method: "POST",
@@ -67,58 +71,6 @@ export const postStaff = (staff) => (dispatch) => {
         });
 };
 
-export const staffLoading = () => ({
-    type: ActionTypes.STAFF_LOADING,
-});
-
-export const staffFailed = (errmess) => ({
-    type: ActionTypes.STAFF_FAILED,
-    payload: errmess,
-});
-
-// update Staff
-export const updateStaff = (staff) => (dispatch) => {
-    return fetch(baseUrl + "staffs", {
-        method: "PATCH",
-        body: JSON.stringify(staff),
-        headers: { "Content-Type": "application/json" },
-        credentials: "same-origin", //gửi thông tin đăng nhập nếu URL yêu cầu có cùng nguồn gốc với tập lệnh gọi
-    })
-        .then(
-            (response) => {
-                if (response.ok) {
-                    return response;
-                } else {
-                    var error = new Error(
-                        "Error " + response.status + " :" + response.statusText
-                    );
-                    error.response = response;
-                    throw error;
-                }
-            },
-            (error) => {
-                var errmess = new Error(error.message);
-                throw errmess;
-            }
-        )
-        .then((response) => response.json())
-        .then((response) => dispatch(addStaff(response)))
-        .catch((error) => {
-            console.log("ERROR MESSAGE " + error.message);
-            alert("Your Update could not be updated\nError: " + error.message);
-        });
-};
-// delete Staff
-export const deleteStaff = (staffId) => (dispatch) => {
-    fetch(baseUrl + "staffs/" + staffId, {
-        method: "DELETE",
-        header: { "Content-Type": "application/json" },
-    })
-        .then((res) => res.json())
-        .then((list) => {
-            dispatch(addStaff(list));
-        });
-};
 
 export const fetchDepartment = () => (dispatch) => {
     dispatch(departmentLoading(true));
@@ -135,6 +87,7 @@ export const fetchDepartment = () => (dispatch) => {
                     error.response = response;
                     throw error;
                 }
+
             },
             (error) => {
                 var errmess = new Error(error.message);
@@ -142,7 +95,8 @@ export const fetchDepartment = () => (dispatch) => {
             }
         )
         .then((response) => response.json())
-        .then((response) => dispatch(addDepartment(response)))
+        .then((response) => dispatch(addDepartment(response)
+        ))
         .catch((error) => dispatch(departmentFailed(error.message)));
 };
 export const addDepartment = (department) => ({
@@ -158,6 +112,7 @@ export const departmentFailed = (department) => ({
     type: ActionTypes.DEPARTMENT_FAILED,
     payload: department,
 });
+
 
 export const fetchStaffSalary = () => (dispatch) => {
     return fetch(baseUrl + "staffsSalary")
@@ -194,36 +149,46 @@ export const salaryFailed = (salary) => ({
     payload: salary,
 });
 
-export const fetchStaffInDept = (id) => (dispatch) => {
-    return fetch(baseUrl + "departments" + `/${id}`)
+export const deleteStaff = (staffId) => (dispatch) => {
+    fetch(baseUrl + "staffs/" + staffId, {
+        method: "DELETE",
+        header: { "Content-Type": "application/json" },
+    })
+        .then((res) => res.json())
+        .then(() => window.location.replace('/nhanvien'))
+        .then((list) => {
+            dispatch(addStaff(list));
+        });
+};
+
+export const updateStaff = (staff) => (dispatch) => {
+    return fetch(baseUrl + "staffs", {
+        method: "PATCH",
+        body: JSON.stringify(staff),
+        headers: { "Content-Type": "application/json" },
+        credentials: "same-origin", //gửi thông tin đăng nhập nếu URL yêu cầu có cùng nguồn gốc với tập lệnh gọi
+    })
         .then(
             (response) => {
-                if (response.ok) return response;
-                else {
+                if (response.ok) {
+                    return response;
+                } else {
                     var error = new Error(
-                        "ERROR :" + response.status + response.statusText
+                        "Error " + response.status + " :" + response.statusText
                     );
                     error.response = response;
                     throw error;
                 }
             },
             (error) => {
-                var errMess = new Error(error.message);
-                throw errMess;
+                var errmess = new Error(error.message);
+                throw errmess;
             }
         )
         .then((response) => response.json())
-        .then((response) => dispatch(addStaffIndept(response)))
-        .catch((response) => dispatch(staffInDeptFailed(response)));
+        .then((response) => dispatch(addStaff(response)))
+        .catch((error) => {
+            console.log("ERROR MESSAGE " + error.message);
+            alert("Your Update could not be updated\nError: " + error.message);
+        });
 };
-export const addStaffIndept = (val) => ({
-    type: ActionTypes.ADD_STAFFINDEPT,
-    payload: val,
-});
-export const staffInDeptFailed = (val) => ({
-    type: ActionTypes.STAFFINDEPT_FAILED,
-    payload: val,
-});
-export const staffInDeptLoad = () => ({
-    type: ActionTypes.STAFFINDEPT_LOADING,
-});

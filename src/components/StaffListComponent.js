@@ -39,7 +39,9 @@ class StaffList extends Component {
     }
 
     handleSubmit = (value) => {
+        //  this.props.resetFeedbackForm();
         const newStaff = {
+            id: Math.floor(Math.random() * 10001),
             name: value.name,
             doB: this.state.doB,
             salaryScale: value.salaryScale,
@@ -50,12 +52,13 @@ class StaffList extends Component {
             salary: 30000,
             image: '/assets/images/alberto.png',
         };
+
         if (!this.state.doB || !this.state.startDate)
             this.setState({
                 touched: { doB: true, startDate: true }
             });
         else
-            this.props.onAdd(newStaff);
+            this.props.postStaff(newStaff);
     }
 
     handleBlur = (field) => (evt) => {
@@ -86,13 +89,12 @@ class StaffList extends Component {
         event.preventDefault();
         const nameS = event.target.nameS.value;
         this.setState({ nameS: nameS })
-        console.log(nameS);
     };
     render() {
 
         const errors = this.validate(this.state.doB, this.state.startDate);
 
-        const Liststaffs = this.props.staffs.staff.filter((val) => {
+        const Liststaffs = this.props.staffs.staffs.filter((val) => {
             if (this.state.nameS === '') return val;
             else if (val.name.toLowerCase().includes(this.state.nameS.toLowerCase()))
                 return val;

@@ -18,10 +18,10 @@ function RenderSalary({ salary }) {
         </Card>
     );
 }
+
 function RenderListSalary(props) {
     const [sortSalary, setSortSalary] = useState(false);
-    console.log(sortSalary);
-    const salary = props.salary.sort((a, b) => sortSalary ? a.salaryScale - b.salaryScale : b.salaryScale - a.salaryScale).map((salary) => {
+    const salary = props.salary.staffs.sort((a, b) => sortSalary ? a.salaryScale - b.salaryScale : b.salaryScale - a.salaryScale).map((salary) => {
         return (
             <div className='col-12 col-mb-6 col-lg-4 mt-2 mb-2' key={salary.id}>
                 <RenderSalary salary={salary} />
