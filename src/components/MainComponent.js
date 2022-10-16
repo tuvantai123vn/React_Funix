@@ -63,8 +63,11 @@ class Main extends Component {
     };
 
     DeptstaffId = ({ match }) => {
-        <StaffDept staff={this.props.staffs.staffs.filter((item) => item.id === parseInt(match.params.deptId, 10))[0]}
-        />
+        return(
+        <StaffDept dept={this.props.department.filter((dept) => dept.id === match.params.deptId)[0]}
+        staff={this.props.staffs.staffs.filter((staff) => staff.departmentId === match.params.deptId)}
+        />);
+        
     }
     StaffWithId = ({ match }) => {
         return (
@@ -88,7 +91,7 @@ class Main extends Component {
                                 postStaff={this.props.postStaff}
                             />} />
                             <Route path='/nhanvien/:staffId' component={this.StaffWithId} />
-                            <Route path='/phongban' component={() => <Department dept={this.props.department} staff={this.props.staffs} />} />
+                            <Route path='/phongban' component={() => <Department dept={this.props.department} staff={this.props.staffs.staffs} />} />
                             <Route path='/phongban/:deptId' component={this.DeptstaffId} />
                             <Route path='/luong' component={() => <RenderListSalary salary={this.props.staffs} />} />
                             <Redirect to='/nhanvien' />

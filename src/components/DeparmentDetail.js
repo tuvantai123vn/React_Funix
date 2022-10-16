@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import { Card, CardImg, CardTitle, Breadcrumb, BreadcrumbItem, } from "reactstrap";
 import { Link } from 'react-router-dom'
@@ -15,7 +14,7 @@ function RenderStaffInDept({ staff }) {
 }
 
 function StaffDept(props) {
-    console.log(props.staff);
+    console.log(props);
     return (
         <div className="row">
             <Breadcrumb>
