@@ -8,6 +8,7 @@ import StaffDetail from './StaffDetail';
 import Department from './DeparmentComponent';
 import RenderListSalary from './SalaryComponent';
 import StaffDept from './DeparmentDetail';
+import Deptdetail from './deptdetail'
 import { fetchStaffs, postStaff, fetchDepartment, addDepartment, fetchStaffSalary, addSalary, updateStaff, deleteStaff } from '../redux/ActionCreators';
 import { Transition, CSSTransition } from 'react-transition-group';
 
@@ -61,14 +62,20 @@ class Main extends Component {
     postStaff = (newStaff) => {
         this.setState({ staffs: [...this.props.staffs.staff, newStaff] });
     };
+    
+
+    deptfilter = (match) => this.props.department.filter((dept) => dept.id === match.params.deptId)[0]
+
+    stafffilter = (match) => this.props.staffs.staffs.filter((staff) => staff.departmentId === match.params.deptId)
 
     DeptstaffId = ({ match }) => {
-        return(
-        <StaffDept dept={this.props.department.filter((dept) => dept.id === match.params.deptId)[0]}
-        staff={this.props.staffs.staffs.filter((staff) => staff.departmentId === match.params.deptId)}
-        />);
         
+        return(
+        <Deptdetail dept={this.deptfilter}
+        staff={this.stafffilter}
+        />);
     }
+
     StaffWithId = ({ match }) => {
         return (
             <StaffDetail staff={this.props.staffs.staffs.filter((item) => item.id === parseInt(match.params.staffId, 10))[0]}
@@ -79,6 +86,8 @@ class Main extends Component {
         );
     }
     render() {
+        console.log(this.props.department)
+        console.log(this.props.staffs.staffs)
         return (
             <div>
                 <Header />
@@ -92,6 +101,7 @@ class Main extends Component {
                             />} />
                             <Route path='/nhanvien/:staffId' component={this.StaffWithId} />
                             <Route path='/phongban' component={() => <Department dept={this.props.department} staff={this.props.staffs.staffs} />} />
+                            {/* <Route path='/hello' component={() => <Deptdetail/>}/> */}
                             <Route path='/phongban/:deptId' component={this.DeptstaffId} />
                             <Route path='/luong' component={() => <RenderListSalary salary={this.props.staffs} />} />
                             <Redirect to='/nhanvien' />
