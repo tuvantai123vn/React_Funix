@@ -3,6 +3,7 @@ import { CardImg, Button, Label, Col, Modal, ModalHeader, ModalBody, Row, Breadc
 import { Control, LocalForm } from 'react-redux-form';
 import { Link } from 'react-router-dom'
 import dateFormat from 'dateformat';
+import {Loading} from './LoadingComponent'
 
 
 function RenderStaff({ staff, department }) {
@@ -62,6 +63,23 @@ function StaffDetail(props) {
         console.log('check redux', props.staff)
         props.deleteStaff(props.staff.id);
     }
+    if(this.props.staffsLoading)
+       return(
+        <div className="container">
+            <div className="row">
+                <Loading />
+            </div>
+        </div>
+    );
+    else if(this.props.staffsErrMess)
+    return(
+        <div className="container">
+            <div className="row">
+                <h4>{this.props.staffsErrMess}</h4>
+            </div>
+        </div>
+    );
+    else
     return (
         <div className="container">
             <div className="row">

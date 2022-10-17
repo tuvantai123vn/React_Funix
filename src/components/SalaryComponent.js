@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Card, CardTitle, Breadcrumb, BreadcrumbItem, CardText, CardBody, Button } from "reactstrap";
 import { Link } from 'react-router-dom';
+import {Loading} from './LoadingComponent'
 
 const LuongCB = 3000000;
 const LuongLT = 200000;
@@ -29,7 +30,23 @@ function RenderListSalary(props) {
         );
     })
 
-
+    if(props.staffsLoading)
+    return(
+     <div className="container">
+         <div className="row">
+             <Loading />
+         </div>
+     </div>
+ );
+ else if(props.staffsErrMess)
+ return(
+     <div className="container">
+         <div className="row">
+             <h4>{this.props.staffsErrMess}</h4>
+         </div>
+     </div>
+ );
+ else
     return (
         <div className="container">
             <div className="row">

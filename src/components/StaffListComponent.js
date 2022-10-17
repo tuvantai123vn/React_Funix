@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Card, CardImg, CardTitle, Button, Form, FormGroup, Label, Input, Col, FormFeedback, Modal, ModalHeader, ModalBody, Row } from "reactstrap";
 import { Link } from 'react-router-dom';
+import {Loading} from './LoadingComponent' 
 import { Control, LocalForm, Errors } from 'react-redux-form';
 
 
@@ -115,7 +116,23 @@ class StaffList extends Component {
                 </div>
             );
         })
-
+       if(this.props.staffsLoading)
+       return(
+        <div className="container">
+            <div className="row">
+                <Loading />
+            </div>
+        </div>
+    );
+    else if(this.props.staffsErrMess)
+    return(
+        <div className="container">
+            <div className="row">
+                <h4>{this.props.staffsErrMess}</h4>
+            </div>
+        </div>
+    );
+    else
         return (
             <div className='container'>
                 <div className='row'>

@@ -8,7 +8,6 @@ import StaffDetail from './StaffDetail';
 import Department from './DeparmentComponent';
 import RenderListSalary from './SalaryComponent';
 import StaffDept from './DeparmentDetail';
-import Deptdetail from './deptdetail'
 import { fetchStaffs, postStaff, fetchDepartment, addDepartment, fetchStaffSalary, addSalary, updateStaff, deleteStaff } from '../redux/ActionCreators';
 import { Transition, CSSTransition } from 'react-transition-group';
 
@@ -63,16 +62,14 @@ class Main extends Component {
         this.setState({ staffs: [...this.props.staffs.staff, newStaff] });
     };
     
-
-    deptfilter = (match) => this.props.department.filter((dept) => dept.id === match.params.deptId)[0]
-
-    stafffilter = (match) => this.props.staffs.staffs.filter((staff) => staff.departmentId === match.params.deptId)
-
     DeptstaffId = ({ match }) => {
         
         return(
-        <Deptdetail dept={this.deptfilter}
-        staff={this.stafffilter}
+        <StaffDept dept={this.props.department.filter((dept) => dept.id === match.params.deptId)[0]}
+        staff={this.props.staffs.staffs.filter((staff) => staff.departmentId === match.params.deptId)     
+    }
+        staffsLoading={this.props.staffs.isLoading}
+        staffsErrMess={this.props.staffs.errMess}
         />);
     }
 
@@ -82,28 +79,29 @@ class Main extends Component {
                 department={this.props.department}
                 updateStaff={this.props.updateStaff}
                 deleteStaff={this.props.deleteStaff}
+                staffsLoading={this.props.staffs.isLoading}
+                staffsErrMess={this.props.staffs.errMess}
             />
         );
     }
     render() {
-        console.log(this.props.department)
-        console.log(this.props.staffs.staffs)
         return (
             <div>
                 <Header />
                 <Transition>
-                    <CSSTransition classNames='page' timeout={300}>
+                <CSSTransition key={this.props.location.key} classNames="page" timeout={300}>
                         <Switch>
                             <Route exact path='/nhanvien' component={() => <StaffList onAdd={this.addStaff} staffs={this.props.staffs}
                                 staffsLoading={this.props.staffs.isLoading}
                                 staffsErrMess={this.props.staffs.errMess}
                                 postStaff={this.props.postStaff}
                             />} />
-                            <Route path='/nhanvien/:staffId' component={this.StaffWithId} />
-                            <Route path='/phongban' component={() => <Department dept={this.props.department} staff={this.props.staffs.staffs} />} />
-                            {/* <Route path='/hello' component={() => <Deptdetail/>}/> */}
-                            <Route path='/phongban/:deptId' component={this.DeptstaffId} />
-                            <Route path='/luong' component={() => <RenderListSalary salary={this.props.staffs} />} />
+                            <Route exact path='/nhanvien/:staffId' component={this.StaffWithId} />
+                            <Route exact path='/phongban' component={() => <Department dept={this.props.department} staff={this.props.staffs.staffs} staffsLoading={this.props.staffs.isLoading}
+                            staffsErrMess={this.props.staffs.errMess}/>} />
+                            <Route exact path='/phongban/:deptId' component={this.DeptstaffId} />
+                            <Route path='/luong' component={() => <RenderListSalary salary={this.props.staffs} staffsLoading={this.props.staffs.isLoading}
+                            staffsErrMess={this.props.staffs.errMess}/>} />
                             <Redirect to='/nhanvien' />
                         </Switch>
                     </CSSTransition>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, CardTitle, CardText, CardBody } from "reactstrap";
 import { Link } from "react-router-dom";
+import {Loading} from './LoadingComponent'
 
 function RenderDept({ dept, staffNo }) {
     // console.log(dept)
@@ -25,6 +26,23 @@ function Department(props) {
             </div>
         );
     })
+    if(props.staffsLoading)
+    return(
+     <div className="container">
+         <div className="row">
+             <Loading />
+         </div>
+     </div>
+ );
+ else if(props.staffsErrMess)
+ return(
+     <div className="container">
+         <div className="row">
+             <h4>{this.props.staffsErrMess}</h4>
+         </div>
+     </div>
+ );
+ else
     return (
         <div className='container'>
             <div className="col-12">
