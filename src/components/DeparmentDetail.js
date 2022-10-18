@@ -5,7 +5,7 @@ import {Loading} from './LoadingComponent'
 
 function RenderStaffInDept({ staff }) {
     return (
-        <div key={staff.id}>
+        
         <div className="col-12 m-2">
         <Card>
             <CardImg width="100%" src={staff.image} alt={staff.image} />
@@ -14,15 +14,17 @@ function RenderStaffInDept({ staff }) {
             </div>
         </Card>
         </div>
-        </div>
+        
     );
 }
 
 function StaffDept(props) {
-    console.log(props);
+    
     const listDept = props.staff.map((staff) => {
         return(
+        <div key={staff.id}>
         <RenderStaffInDept staff={staff} />
+        </div>
         )
     })
     if(props.staffsLoading)
@@ -49,8 +51,8 @@ function StaffDept(props) {
                 <BreadcrumbItem>
                     <Link to='/phongban'>Phòng ban</Link>
                 </BreadcrumbItem>
-                <BreadcrumbItem active>{props.dept.name}</BreadcrumbItem>
-            </Breadcrumb>
+                <BreadcrumbItem active>{ (props.dept !== undefined ? props.dept.name : '') }</BreadcrumbItem>
+                </Breadcrumb>
         </div>
         <div className="row">
             {listDept}

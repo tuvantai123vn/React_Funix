@@ -7745,7 +7745,7 @@
     "prop-types" "^15.5.8"
     "warning" "^3.0.0"
 
-"react@^0.14.0 || ^15.0.0-0 || ^16.0.0-0", "react@^15.3.0 || ^16.0.0", "react@^16.0.0", "react@^16.14.0", "react@^16.3.2", "react@>=15", "react@>=15.0.0", "react@0.14.x || ^15.0.0 || ^16.0.0":
+"react@^0.14.0 || ^15.0.0-0 || ^16.0.0-0", "react@^15.3.0 || ^16.0.0", "react@^16.0.0", "react@^16.14.0", "react@>=15", "react@>=15.0.0", "react@0.14.x || ^15.0.0 || ^16.0.0":
   "integrity" "sha512-0X2CImDkJGApiAlcf0ODKIneSwBPhqJawOa5wCtKbu7ZECrmS26NvtSILynQ66cgkT/RJ4LidJOc3bUESwmU8g=="
   "resolved" "https://registry.npmjs.org/react/-/react-16.14.0.tgz"
   "version" "16.14.0"

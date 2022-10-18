@@ -11,7 +11,7 @@ function Header() {
                 <div className='container'>
                     <NavbarToggler onClick={toggle} />
                     <NavbarBrand>
-                        <img src='assets/images/logo.png' width='40' alt='Quan ly nhan vien' />
+                        <img src='/assets/images/logo.png' width='40' alt='Quan ly nhan vien' />
                     </NavbarBrand>
                     <Collapse navbar isOpen={isOpen} >
                         <Nav navbar>

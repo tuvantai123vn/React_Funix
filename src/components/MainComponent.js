@@ -50,9 +50,6 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 class Main extends Component {
-    constructor(props) {
-        super(props);
-    }
     componentDidMount() {
         this.props.fetchStaffs();
         this.props.fetchDepartment();
@@ -62,8 +59,10 @@ class Main extends Component {
         this.setState({ staffs: [...this.props.staffs.staff, newStaff] });
     };
     
-    DeptstaffId = ({ match }) => {
-        
+    DeptstaffId
+     = ({ match }) => {
+        let item = this.props.department.filter((dept) => dept.id === match.params.deptId)[0];
+        console.log("DeptStaffId",item)
         return(
         <StaffDept dept={this.props.department.filter((dept) => dept.id === match.params.deptId)[0]}
         staff={this.props.staffs.staffs.filter((staff) => staff.departmentId === match.params.deptId)     
@@ -90,7 +89,7 @@ class Main extends Component {
                 <Header />
                 <Transition>
                 <CSSTransition key={this.props.location.key} classNames="page" timeout={300}>
-                        <Switch>
+                        <Switch location={this.props.location}>
                             <Route exact path='/nhanvien' component={() => <StaffList onAdd={this.addStaff} staffs={this.props.staffs}
                                 staffsLoading={this.props.staffs.isLoading}
                                 staffsErrMess={this.props.staffs.errMess}

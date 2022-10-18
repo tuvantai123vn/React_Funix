@@ -21,12 +21,15 @@ function RenderStaff({ staff, department }) {
                     <CardText>
                         Ngày vào công ty: {dateFormat(staff.startDate, 'yyyy - mm - dd')}
                     </CardText>
-                    {department.map((department) => {
+                    {department.filter((department) => {
                         if (department.id === staff.departmentId) {
-                            return (
-                                <CardText key={department.id}>Phòng ban: {department.name}</CardText>
-                            );
+                            return true
                         }
+                        return false
+                    }).map(department => {
+                        return (
+                            <CardText key={department.id}>Phòng ban: {department.name}</CardText>
+                        );
                     })}
                     <CardText> Hệ số lương: {staff.salaryScale}</CardText>
                     <CardText> Số ngày nghỉ: {staff.annualLeave}</CardText>
@@ -63,7 +66,7 @@ function StaffDetail(props) {
         console.log('check redux', props.staff)
         props.deleteStaff(props.staff.id);
     }
-    if(this.props.staffsLoading)
+    if(props.staffsLoading)
        return(
         <div className="container">
             <div className="row">
@@ -71,7 +74,7 @@ function StaffDetail(props) {
             </div>
         </div>
     );
-    else if(this.props.staffsErrMess)
+    else if(props.staffsErrMess)
     return(
         <div className="container">
             <div className="row">
