@@ -30,7 +30,7 @@ function RenderListSalary(props) {
         );
     })
 
-    if(props.staffsLoading)
+    if(props.Loading)
     return(
      <div className="container">
          <div className="row">
@@ -38,7 +38,7 @@ function RenderListSalary(props) {
          </div>
      </div>
  );
- else if(props.staffsErrMess)
+ else if(props.ErrMess)
  return(
      <div className="container">
          <div className="row">

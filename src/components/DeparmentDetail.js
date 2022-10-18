@@ -8,10 +8,12 @@ function RenderStaffInDept({ staff }) {
         
         <div className="col-12 m-2">
         <Card>
+        <Link to={`/nhanvien/${staff.id}`} >
             <CardImg width="100%" src={staff.image} alt={staff.image} />
             <div>
                 <CardTitle>{staff.name}</CardTitle>
             </div>
+            </Link>
         </Card>
         </div>
         
@@ -27,7 +29,7 @@ function StaffDept(props) {
         </div>
         )
     })
-    if(props.staffsLoading)
+    if(props.Loading)
     return(
      <div className="container">
          <div className="row">
@@ -35,7 +37,7 @@ function StaffDept(props) {
          </div>
      </div>
  );
- else if(props.staffsErrMess)
+ else if(props.ErrMess)
  return(
      <div className="container">
          <div className="row">

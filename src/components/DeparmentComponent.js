@@ -26,7 +26,7 @@ function Department(props) {
             </div>
         );
     })
-    if(props.staffsLoading)
+    if(props.Loading)
     return(
      <div className="container">
          <div className="row">
@@ -34,7 +34,7 @@ function Department(props) {
          </div>
      </div>
  );
- else if(props.staffsErrMess)
+ else if(props.ErrMess)
  return(
      <div className="container">
          <div className="row">
