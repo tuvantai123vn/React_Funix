@@ -80,13 +80,14 @@ class Main extends Component {
             />
         );
     }
+    
     render() {
         return (
             <div>
                 <Header />
-                <Transition>
+                <Transition timeout={300}>
                 <CSSTransition key={this.props.location.key} classNames="page" timeout={300}>
-                        <Switch location={this.props.location}>
+                        <Switch>
                             <Route exact path='/nhanvien' component={() => <StaffList onAdd={this.addStaff} staffs={this.props.staffs}
                                 staffsLoading={this.props.staffs.isLoading}
                                 staffsErrMess={this.props.staffs.staffFailed}
