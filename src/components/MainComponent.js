@@ -25,6 +25,7 @@ class Main extends Component {
     onDishSelect(dishId) {
         this.setState({ selectedDish: dishId })
     }
+    
 
     render() {
         const HomePage = () => {
