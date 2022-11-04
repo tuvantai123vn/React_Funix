@@ -7,7 +7,7 @@ class Header extends Component {
         super(props);
         this.state = {
             isNavOpen: false,
-            isModalOpen: false
+            isModalOpen: false,
         };
         this.toggleNav = this.toggleNav.bind(this);
         this.toggleModal = this.toggleModal.bind(this);
@@ -86,7 +86,6 @@ class Header extends Component {
                     <ModalHeader toggle={this.toggleModal}>Login</ModalHeader>
                     <ModalBody>
                         <Form onSubmit={this.handleLogin}>
-                        </Form>
                         <FormGroup>
                             <Label htmlFor='username'>Username</Label>
                             <Input type='text' id='username' name='username' innerRef={(input) => this.username = input} />
@@ -101,6 +100,7 @@ class Header extends Component {
                             </Label>
                         </FormGroup>
                         <Button type='submit' value='submit' className='bg-primary'>Login</Button>
+                        </Form>
                     </ModalBody>
                 </Modal>
             </React.Fragment >
